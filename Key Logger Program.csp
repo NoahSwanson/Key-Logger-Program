@@ -1,0 +1,19 @@
+.EQU KEYBOARD_STATUS, $000
+.EQU KEYBOARD_DATA, $001
+
+LDX# 000
+
+MAIN_LOOP:
+	CMX# 10
+	JGE END
+	JMP POLL_KEYBOARD
+
+POLL_KEYBOARD: INB KEYBOARD_STATUS
+               JGE POLL_KEYBOARD
+               NOP
+               INB KEYBOARD_DATA
+               STA+ $D00
+               ADX# 001
+               JMP MAIN_LOOP
+
+END: HLT
